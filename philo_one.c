@@ -12,12 +12,51 @@ int number_of_time_each_philosopher_must_eat;
 int opt = 0;
 pthread_mutex_t* forks;
 pthread_mutex_t m_tab;
-int tab[];
+int tab[] = {0,0,0,0,0};
 
 void *philo(void *i){
     long p_num = ((long) i) % number_of_philosophers;
+
+    while(1){
+    // lock tab
+    pthread_mutex_lock(&m_tab);
+    if(tab[p_num + 2]){
+	// unlock tab
+	pthread_mutex_unlock(&m_tab);
+	printf("p%ld >> need to wait\n", p_num);
+	fflush(stdout);
+    } else {
+	// put true to locked forks
+	tab[p_num + 1] = 1;
+	tab[p_num]     = 1;
+	
+	// unlock tab
+	pthread_mutex_unlock(&m_tab);
+
+	pthread_mutex_lock(&forks[p_num + 1]);
+	pthread_mutex_lock(&forks[p_num]);
+	//wait
+	printf("p%ld >> MIAM MIAM MIAM\n", p_num);
+	fflush(stdout);
+	
+	//unlock fi
+	//unlock fi+1
+	pthread_mutex_unlock(&forks[p_num + 1]);
+	pthread_mutex_unlock(&forks[p_num]);
+
+	//lock tab
+	pthread_mutex_lock(&m_tab);
+	
+	//put false to unlocked forks
+	tab[p_num + 1] = 0;
+	tab[p_num]     = 0;
+	
+	//unlock tab
+	pthread_mutex_unlock(&m_tab);
+    }
+    }
+
     
-    printf("%ld >> Hello!\n", p_num);
     fflush(stdout);
     return NULL;
 }
