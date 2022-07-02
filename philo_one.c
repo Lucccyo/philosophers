@@ -5,15 +5,15 @@
 #include <getopt.h>
 #include <unistd.h>
 
-int			g_number_of_philosophers;
-double			g_time_to_die;
-double			g_time_to_eat;
-double			g_time_to_sleep;
-int			g_number_of_time_each_philosopher_must_eat;
-int			g_opt = 0;
-pthread_mutex_t		*g_forks;
-pthread_mutex_t		g_m_tab;
-int			g_tab [] = {0, 0, 0, 0, 0};
+int		g_number_of_philosophers;
+int		g_number_of_time_each_philosopher_must_eat;
+int		g_opt = 0;
+int		g_tab [] = {0, 0, 0, 0, 0};
+double		g_time_to_die;
+double		g_time_to_eat;
+double		g_time_to_sleep;
+pthread_mutex_t	*g_forks;
+pthread_mutex_t	g_m_tab;
 
 void	*philo(void *i)
 {
